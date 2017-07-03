@@ -1,0 +1,4 @@
+/Dataset/csv/drink_glass/*.csv
+/Dataset/csv/sitdown_chair/*.csv
+/Dataset/csv/standup_chair/*.csv
+/Dataset/csv/walk/*.csv

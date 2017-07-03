@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    decisiontree (0.5.0)
+    nbayes (0.1.1)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  decisiontree
+  nbayes
+
+RUBY VERSION
+   ruby 2.4.1p111
+
+BUNDLED WITH
+   1.15.1
