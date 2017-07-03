@@ -33,6 +33,11 @@ class DecisionTreeClassifier
     end
   end
 
+  # Takes attribute/label => ['Vector Sum']
+  # training data => @train
+  # default value => 1 (can be any of the activity names as well)
+  # type of dataset => takes :discrete or :continuous
+  # I have assumed the dataset to be discrete
   def dec_tree
     @dt ||= DecisionTree::ID3Tree.new(['Vector Sum'], @train, 1, :discrete)
   end

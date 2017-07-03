@@ -2,7 +2,8 @@
 
 require 'csv'
 
-# Converts the data of x, y and z axis of Accelerometer from raw text to csv
+# Normalize x, y and z axis accelerations into a sum of vector magnitude
+# Append the data into a csv file
 class DataModeler
   ACTIVITIES.each do |activity|
     %w[training test].each do |file_type|

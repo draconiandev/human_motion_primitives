@@ -2,7 +2,7 @@
 
 require 'nbayes'
 
-# main
+# nbayes
 class NaiveBayesClassifier
   def train_and_validate
     train
