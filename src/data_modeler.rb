@@ -40,7 +40,7 @@ class DataModeler
   def fetch_data_and_append_to(csv, file_type)
     Dir.glob(file_type) do |file|
       File.open(file).read.split(/\r\n/).map do |row|
-        num = row.split(' ').map { |e| e.to_i ^ 2 }.reduce(:+)
+        num = row.split(' ').map { |e| e.to_i**2 }.reduce(:+)
         csv << [Math.sqrt(num).round(4)]
       end
     end
