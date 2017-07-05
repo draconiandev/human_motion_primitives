@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'irb'
 require 'csv'
 
 # Normalize x, y and z axis accelerations into a sum of vector magnitude
@@ -27,22 +28,33 @@ class DataModeler
   ACTIVITIES.each do |activity|
     file_paths = "Dataset/#{activity}/*.txt"
     act = activity.downcase
+    files = Dir.glob(file_paths)
+    train = files.sample(75)
 
     define_method "training_file_#{act}" do
-      Dir.glob(file_paths).sort.first(75)
+      train
     end
 
     define_method "test_file_#{act}" do
-      Dir.glob(file_paths).sort.last(25)
+      files - train
     end
   end
 
   def fetch_data_and_append_to(csv, file_type)
     Dir.glob(file_type) do |file|
+      vol_id = File.basename(file, File.extname(file)).split('-').last
       File.open(file).read.split(/\r\n/).map do |row|
-        num = row.split(' ').map { |e| e.to_i**2 }.reduce(:+)
-        csv << [Math.sqrt(num).round(4)]
+        csv << [calculate_vector_magnitue(row), vol_id]
       end
     end
+  end
+
+  def calculate_vector_magnitue(row)
+    # row.split(' ').map { |e| calibrate(e) }.reduce(:+)
+    Math.sqrt(row.split(' ').map { |e| calibrate(e) }.reduce(:+))
+  end
+
+  def calibrate(e)
+    (-1.5 * 9.8 + e.to_f / 63 * 3 * 9.8)**2
   end
 end

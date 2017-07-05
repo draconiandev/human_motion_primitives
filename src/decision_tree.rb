@@ -5,7 +5,6 @@ require 'decisiontree'
 # decision tree
 class DecisionTreeClassifier
   def train_and_validate
-    train
     dec_tree.train
     validate
   end
@@ -13,12 +12,13 @@ class DecisionTreeClassifier
   private
 
   def train
-    @train = []
+    train_array = []
     ACTIVITIES.each do |activity|
       act = activity.downcase
-      @train += CSV.read("Dataset/csv/#{act}/#{act}_training.csv")
-                   .flatten.map(&:to_f).map { |e| [e, act] }
+      train_array += CSV.read("Dataset/csv/#{act}/#{act}_training.csv")
+                        .flatten.map(&:to_f).map { |e| [e, act] }
     end
+    train_array
   end
 
   def validate
@@ -39,7 +39,7 @@ class DecisionTreeClassifier
   # type of dataset => takes :discrete or :continuous
   # I have assumed the dataset to be discrete
   def dec_tree
-    @dt ||= DecisionTree::ID3Tree.new(['Vector Sum'], @train, 1, :discrete)
+    @dt ||= DecisionTree::ID3Tree.new(['Vector Sum'], train, 1, :discrete)
   end
 
   def probability_ratio(test_set, act)
@@ -54,8 +54,13 @@ class DecisionTreeClassifier
   def print_data(test_set, act)
     hash = probability_ratio(test_set, act)
     puts "Max Class: #{hash.key(hash.values.max)}"
+    puts "\nAccuracy of predicting '#{act}' : #{accuracy_per(test_set, act)}%\n"
     hash.each do |k, _v|
       puts "Probability of being #{k}: #{hash[k]}"
     end
+  end
+
+  def accuracy_per(test_set, act)
+    (test_set.count(act).to_f / test_set.count).round(4) * 100
   end
 end
